@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #coding=utf-8
+import math
 
 class ListNode(object):
     def __init__(self, x):
@@ -37,12 +38,6 @@ class Solution(object):
                 max_length = length
         return max_length
 
-    def detectCycle(self, head):
-        """
-        :type head: ListNode
-        :rtype: ListNode
-        """
-    
     def hasCycle(self, head):
         """
         :type head: ListNode
@@ -50,44 +45,88 @@ class Solution(object):
         """
         if not head or not head.next:
             return False
-        
 
-class PeekingIterator(object):
-    def __init__(self, iterator):
-        """
-        Initialize your data structure here.
-        :type iterator: Iterator
-        """
-        self.iterator = iterator
+    def countPrimes(self, n):
+        if n <= 2:
+            return 0
+        ret = 0
+        limit = int(math.sqrt(n))
+        
+        a = [False, False]
+        for i in range(2, n + 1):
+            a.append(True)
+        
+        for i in range(2, limit + 1):
+            if a[i]:
+                j = i;
+                while j * i <= n:
+                    a[j * i] = False
+                    j += 1
+        
+        for i in range(2, n):
+            if a[i]:
+                ret += 1
+        
+        return ret
     
+    def reverseList(self, head):
+        """
+        206 Reverse Linked List
+        """
+        if head == None or head.next == None:
+            return head
+        
+        current = head.next
+        previous = head
+        tmp = None
+        head.next = None
+        while current.next != None:
+            tmp = current.next
+            current.next = previous
+            previous = current
+            current = tmp
+        current.next = previous
+        return current
+
+class Queue(object):
+    """
+    232 Implement Queue using Stacks
+    """
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.stack = []
+
+
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: nothing
+        """
+        self.stack.append(x)
+
+    def pop(self):
+        """
+        :rtype: nothing
+        """
+        ret = self.stack[0]
+        self.stack = self.stack[1:]
+        return ret
+
     def peek(self):
         """
-        Returns the next element in the iteration without advancing the iterator.
         :rtype: int
         """
-        return self.
+        return self.stack[0]
 
-    def next(self):
-        """
-        :rtype: int
-        """
-    
-    def hasNext(self):
+
+    def empty(self):
         """
         :rtype: bool
         """
-        if self.peek():
-            return True
-        else:
-            return False
-        
-
-# Your PeekingIterator object will be instantiated and called as such:
-# iter = PeekingIterator(Iterator(nums))
-# while iter.hasNext():
-#     val = iter.peek()   # Get the next element but not advance the iterator.
-#     iter.next()         # Should return the same value as [val].
+        return True if len(self.stack) == 0 else False
 
 solution = Solution()
-a = [1,2,0,1]
-print solution.longestConsecutive(a)
+
+print solution.countPrimes(1500000)
