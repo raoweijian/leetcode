@@ -88,6 +88,21 @@ class Solution(object):
         current.next = previous
         return current
 
+    def canWinNim(self, n):
+        """
+        292
+
+        如果有4个，就是肯定输。如果有5 - 7个，就肯定赢。那么如果有8个呢？
+        你取1-3个，就给对手留下5-7个，那么就是你输了。
+        如果总共15个石头，你就拿走3个，还剩12个。无论他拿走几个，你都可以让他再面对8个，以此类推。
+
+        所以可以得出，谁面对4个的倍数，那么下次还可以让他面对4个的倍数。所以输定了
+        """
+        if n % 4 == 0:
+            return false
+        else:
+            return true
+
 class Queue(object):
     """
     232 Implement Queue using Stacks
