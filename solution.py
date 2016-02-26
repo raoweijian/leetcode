@@ -140,6 +140,41 @@ class Solution(object):
         简单来说，如果明天的价格比今天高，那么就今天买，明天卖。否则就不操作
         """
         return sum(max(prices[i + 1] - prices[i], 0) for i in range(len(prices) - 1))
+    
+    def firstBadVersion(self, n):
+        left = 1
+        right = n
+        check = (left + right) / 2
+        ret = 0
+        while right - left >= 2:
+            if isBadVersion(check):
+                right = check
+            else:
+                left = check
+            check = (left + right) / 2
+        
+        if isBadVersion(left):
+            return left
+        else:
+            return right
+
+    def getHint(self, secret, guess):
+        bull = 0
+        cow = 0
+        dict_secret = dict()
+        dict_guess = dict()
+        for i in range(len(secret)):
+            if secret[i] == guess[i]:
+                bull += 1
+            else:
+                dict_secret[secret[i]] = 1 if not dict_secret.has_key(secret[i]) else dict_secret[secret[i]] + 1
+                dict_guess[guess[i]] = 1 if not dict_guess.has_key(guess[i]) else dict_guess[guess[i]] + 1
+
+        for key in dict_secret:
+            if dict_guess.has_key(key):
+                cow += min(dict_guess[key], dict_secret[key])
+        ret = "%sA%sB" % (bull, cow)
+        return ret
 
 class Queue(object):
     """
@@ -182,4 +217,4 @@ class Queue(object):
 
 solution = Solution()
 
-print solution.canWinNim(8)
+print solution.getHint("1807", "7810")
